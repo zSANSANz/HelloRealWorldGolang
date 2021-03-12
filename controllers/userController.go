@@ -18,3 +18,16 @@ func GetUsersController(c echo.Context) error {
 		"users":  users,
 	})
 }
+
+func CreateUserController(c echo.Context) error {
+	user, e := database.CreateUser()
+	c.Bind(&user)
+
+	if e != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success create new user",
+		"user":    user,
+	})
+}

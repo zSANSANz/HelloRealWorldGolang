@@ -13,3 +13,12 @@ func GetUsers() (interface{}, error) {
 	}
 	return users, nil
 }
+
+func CreateUser() (interface{}, error) {
+	user := models.User{}
+
+	if e := config.DB.Save(&user).Error; e != nil {
+		return nil, e
+	}
+	return user, nil
+}
