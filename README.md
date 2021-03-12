@@ -32,45 +32,6 @@ Lower is better!
 
 
 
-
-
-
-
-
-The benchmarks above were run on an Intel(R) Core(TM) i7-6820HQ CPU @ 2.70GHz
-
-Guide
-Installation
-// go get github.com/labstack/echo/{version}
-go get github.com/labstack/echo/v4
-Example
-package main
-
-import (
-  "net/http"
-  "github.com/labstack/echo/v4"
-  "github.com/labstack/echo/v4/middleware"
-)
-
-func main() {
-  // Echo instance
-  e := echo.New()
-
-  // Middleware
-  e.Use(middleware.Logger())
-  e.Use(middleware.Recover())
-
-  // Routes
-  e.GET("/", hello)
-
-  // Start server
-  e.Logger.Fatal(e.Start(":1323"))
-}
-
-// Handler
-func hello(c echo.Context) error {
-  return c.String(http.StatusOK, "Hello, World!")
-}
 Help
 Forum
 Chat
