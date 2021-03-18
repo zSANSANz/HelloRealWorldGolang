@@ -22,3 +22,4 @@ func CreateUser() (interface{}, error) {
 	}
 	return user, nil
 }
+ 

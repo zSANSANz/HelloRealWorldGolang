@@ -30,4 +30,5 @@ func CreateUserController(c echo.Context) error {
 		"message": "success create new user",
 		"user":    user,
 	})
+ 
 }
