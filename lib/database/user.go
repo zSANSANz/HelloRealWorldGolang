@@ -8,18 +8,16 @@ import (
 func GetUsers() (interface{}, error) {
 	var users []models.User
 
-	if e := config.DB.Find(&users).Error; e != nil {
-		return nil, e
+	if err := config.DB.Find(&users).Error; err != nil {
+		return nil, err
 	}
 	return users, nil
 }
 
-func CreateUser() (interface{}, error) {
-	user := models.User{}
+func CreateUser(user *models.User) (interface{}, error) {
 
-	if e := config.DB.Save(&user).Error; e != nil {
-		return nil, e
+	if err := config.DB.Save(user).Error; err != nil {
+		return nil, err
 	}
 	return user, nil
 }
- 
