@@ -17,7 +17,7 @@ func InitDB() {
 		"DB_Password": "",
 		"DB_Port":     "3306",
 		"DB_Host":     "127.0.0.1",
-		"DB_Name":     "training",
+		"DB_Name":     "db_toko",
 	}
 
 	connectionString :=
@@ -39,4 +39,5 @@ func InitDB() {
 
 func InitMigrate() {
 	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Product{})
 }
