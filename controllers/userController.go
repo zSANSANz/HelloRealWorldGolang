@@ -20,6 +20,18 @@ func GetUsersController(c echo.Context) error {
 	})
 }
 
+func GetUserController(c echo.Context) error {
+	users, e := database.GetUser()
+
+	if e != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status": "success",
+		"users":  users,
+	})
+}
+
 func CreateUserController(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
@@ -30,6 +42,34 @@ func CreateUserController(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success create new user",
+		"user":    users,
+	})
+}
+
+func DeleteUserController(c echo.Context) error {
+	user := models.User{}
+	c.Bind(&user)
+	users, e := database.CreateUser(&user)
+
+	if e != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success delete user",
+		"user":    users,
+	})
+}
+
+func UpdateUserController(c echo.Context) error {
+	user := models.User{}
+	c.Bind(&user)
+	users, e := database.UpdateUser(&user)
+
+	if e != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success update user",
 		"user":    users,
 	})
 }
