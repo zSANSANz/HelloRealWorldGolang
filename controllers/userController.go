@@ -2,74 +2,101 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
+	
 	"project/lib/database"
 	"project/models"
 
 	"github.com/labstack/echo"
 )
-
+// GetUsersController get all users
 func GetUsersController(c echo.Context) error {
-	users, e := database.GetUsers()
+	users, err := database.GetUsers()
 
-	if e != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"status": "success",
-		"users":  users,
+		"users": users,
 	})
 }
 
+// GetUserController get a user by given user ID
 func GetUserController(c echo.Context) error {
-	users, e := database.GetUser()
-
-	if e != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed to get a user, user with ID " + c.Param("id") + " is not found",
+		})
 	}
+
+	user, getErr := database.GetUser(id)
+	if getErr != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, getErr.Error())
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status": "success",
-		"users":  users,
+		"status"	: "success",
+		"user"		: user,
 	})
 }
 
-func CreateUserController(c echo.Context) error {
-	user := models.User{}
-	c.Bind(&user)
-	users, e := database.CreateUser(&user)
-
-	if e != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success create new user",
-		"user":    users,
-	})
-}
-
+// DeleteUserController delete a user by given user ID
 func DeleteUserController(c echo.Context) error {
-	user := models.User{}
-	c.Bind(&user)
-	users, e := database.CreateUser(&user)
-
-	if e != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"message": "failed to get a user, user with ID " + c.Param("id") + " is not found",
+		})
 	}
+
+	// var user models.User
+	if _, deleteErr := database.DeleteUser(id); deleteErr != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, deleteErr.Error())
+	} 
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success delete user",
-		"user":    users,
+		"message": "success",
 	})
 }
 
+// UpdateUserController update a user by given user ID and its form data
 func UpdateUserController(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"message": "failed to get a user, user with ID " + c.Param("id") + " is not found",
+		})
+	}
+
+	var updateUser models.User
+	c.Bind(&updateUser)
+	user, updateErr := database.UpdateUser(id, &updateUser)
+	if updateErr != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, updateErr.Error())
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status"	: "success",
+		"user"		:	user,
+	})
+}
+
+// CreateUserController create new user by given form data
+func CreateUserController(c echo.Context) error {
+	// binding data
 	user := models.User{}
 	c.Bind(&user)
-	users, e := database.UpdateUser(&user)
 
-	if e != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
+	_, err := database.CreateUser(&user)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success update user",
-		"user":    users,
+		"status"	: "success",
+		"user"		:	user,
 	})
 }
