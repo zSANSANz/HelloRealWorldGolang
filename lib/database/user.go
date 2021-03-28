@@ -5,7 +5,7 @@ import (
 	"project/middlewares"
 	"project/models"
 )
-// GetUsers return all users data
+
 func GetUsers() (interface{}, error) {
 	var users []models.User
 
@@ -15,7 +15,6 @@ func GetUsers() (interface{}, error) {
 	return users, nil
 }
 
-// GetUser return user data by given user id
 func GetUser(id int) (interface{}, error) {
 	var user models.User
 
@@ -25,7 +24,6 @@ func GetUser(id int) (interface{}, error) {
 	return user, nil
 }
 
-// DeleteUser delete user data from database by given user id
 func DeleteUser(id int) (interface{}, error) {
 	var user models.User
 	if err := config.DB.First(&user, id).Error; err != nil {
@@ -38,7 +36,6 @@ func DeleteUser(id int) (interface{}, error) {
 	return nil, nil
 }
 
-// UpdateUser update user data by giving new user data and existing user id
 func UpdateUser(id int, user *models.User) (interface{}, error) {
 	var existingUser models.User
 	if err := config.DB.First(&existingUser, id).Error; err != nil {
@@ -54,7 +51,6 @@ func UpdateUser(id int, user *models.User) (interface{}, error) {
 	return existingUser, nil
 }
 
-// CreateUser store new user data
 func CreateUser(user *models.User) (interface{}, error) {
 	if err := config.DB.Create(user).Error; err != nil {
 		return nil, err

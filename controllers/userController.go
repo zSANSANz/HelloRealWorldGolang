@@ -9,7 +9,7 @@ import (
 
 	"github.com/labstack/echo"
 )
-// GetUsersController get all users
+
 func GetUsersController(c echo.Context) error {
 	users, err := database.GetUsers()
 
@@ -23,7 +23,6 @@ func GetUsersController(c echo.Context) error {
 	})
 }
 
-// GetUserController get a user by given user ID
 func GetUserController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -43,7 +42,6 @@ func GetUserController(c echo.Context) error {
 	})
 }
 
-// DeleteUserController delete a user by given user ID
 func DeleteUserController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -52,7 +50,6 @@ func DeleteUserController(c echo.Context) error {
 		})
 	}
 
-	// var user models.User
 	if _, deleteErr := database.DeleteUser(id); deleteErr != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, deleteErr.Error())
 	} 
@@ -62,7 +59,6 @@ func DeleteUserController(c echo.Context) error {
 	})
 }
 
-// UpdateUserController update a user by given user ID and its form data
 func UpdateUserController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -84,9 +80,7 @@ func UpdateUserController(c echo.Context) error {
 	})
 }
 
-// CreateUserController create new user by given form data
 func CreateUserController(c echo.Context) error {
-	// binding data
 	user := models.User{}
 	c.Bind(&user)
 

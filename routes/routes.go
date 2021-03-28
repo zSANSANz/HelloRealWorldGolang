@@ -21,11 +21,11 @@ func New() *echo.Echo {
 	r.DELETE("/users/:id", controllers.DeleteUserController)
 	r.PUT("/users/:id", controllers.UpdateUserController)
 	
-	e.GET("/products", controllers.GetProductsController)
-	e.POST("/products/store", controllers.CreateProductController)
+	r.GET("/products", controllers.GetProductsController)
+	r.POST("/products", controllers.CreateProductController)
 
-	e.GET("/product_categories", controllers.GetProductCategoriesController)
-	e.POST("/product_categories/store", controllers.CreateProductCategoryController)
+	r.GET("/product_categories", controllers.GetProductCategoriesController)
+	r.POST("/product_categories", controllers.CreateProductCategoryController)
 	
 	return e
 }
