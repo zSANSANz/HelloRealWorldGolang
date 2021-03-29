@@ -42,27 +42,52 @@ func GetProductCategoryController(c echo.Context) error {
 }
 
 func DeleteProductCategoryController(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"message": "failed to get a user, user with ID " + c.Param("id") + " is not found",
+		})
+	}
+
+	if _, deleteErr := database.DeleteProductCategory(id); deleteErr != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, deleteErr.Error())
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message":         "success create new productCategory",
-		"productCategory": "test delete",
+		"productCategory": "success",
 	})
 }
 
 func UpdateProductCategoryController(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"message": "failed to get a product category, user with ID " + c.Param("id") + " is not found",
+		})
+	}
+
+	var UpdateProductCategory models.ProductCategory
+	c.Bind(&UpdateProductCategory)
+	productCategory, updateErr := database.UpdateProductCategory(id, &UpdateProductCategory)
+	if updateErr != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, updateErr.Error())
+	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":         "success create new productCategory",
-		"productCategory": "test update",
+		"productCategory": productCategory,
 	})
 }
 
 func CreateProductCategoryController(c echo.Context) error {
 	productCategory := models.ProductCategory{}
 	c.Bind(&productCategory)
+
 	productCategories, e := database.CreateProductCategory(&productCategory)
 
 	if e != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
 	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message":         "success create new productCategory",
 		"productCategory": productCategories,
