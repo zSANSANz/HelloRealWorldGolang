@@ -15,8 +15,27 @@ func GetProductsController(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, e.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status": "success",
-		"products":  products,
+		"status":   "success",
+		"products": products,
+	})
+}
+
+func GetProductController(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}) {
+			"message": "failed to get a product, product with ID " + c.Param("id") + " is not found",
+		})
+	}
+
+	product, getErr := database.GetProduct(id)
+	if getErr != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, getErr.Error())
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status":          "success",
+		"product": product,
 	})
 }
 
@@ -30,6 +49,6 @@ func CreateProductController(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success create new product",
-		"product":    products,
+		"product": products,
 	})
 }

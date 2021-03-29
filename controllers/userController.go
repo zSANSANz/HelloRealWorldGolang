@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 	"strconv"
-	
+
 	"project/lib/database"
 	"project/models"
 
@@ -19,7 +19,7 @@ func GetUsersController(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"status": "success",
-		"users": users,
+		"users":  users,
 	})
 }
 
@@ -37,8 +37,8 @@ func GetUserController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status"	: "success",
-		"user"		: user,
+		"status": "success",
+		"user":   user,
 	})
 }
 
@@ -52,7 +52,7 @@ func DeleteUserController(c echo.Context) error {
 
 	if _, deleteErr := database.DeleteUser(id); deleteErr != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, deleteErr.Error())
-	} 
+	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success",
@@ -75,8 +75,8 @@ func UpdateUserController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status"	: "success",
-		"user"		:	user,
+		"status": "success",
+		"user":   user,
 	})
 }
 
@@ -85,12 +85,13 @@ func CreateUserController(c echo.Context) error {
 	c.Bind(&user)
 
 	_, err := database.CreateUser(&user)
+
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status"	: "success",
-		"user"		:	user,
+		"status": "success",
+		"user":   user,
 	})
 }
