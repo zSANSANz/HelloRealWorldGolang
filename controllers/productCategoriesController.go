@@ -30,14 +30,14 @@ func GetProductCategoryController(c echo.Context) error {
 		})
 	}
 
-	user, getErr := database.GetProductCategory(id)
+	productCategory, getErr := database.GetProductCategory(id)
 	if getErr != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, getErr.Error())
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status": "success",
-		"user":   user,
+		"status":          "success",
+		"productCategory": productCategory,
 	})
 }
 
@@ -45,7 +45,7 @@ func DeleteProductCategoryController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"message": "failed to get a user, user with ID " + c.Param("id") + " is not found",
+			"message": "failed to get a product category, user with ID " + c.Param("id") + " is not found",
 		})
 	}
 
@@ -62,7 +62,7 @@ func UpdateProductCategoryController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"message": "failed to get a product category, user with ID " + c.Param("id") + " is not found",
+			"message": "failed to get a product category, product category with ID " + c.Param("id") + " is not found",
 		})
 	}
 

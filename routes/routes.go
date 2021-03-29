@@ -28,7 +28,7 @@ func New() *echo.Echo {
 	r.GET("/product_categories", controllers.GetProductCategoriesController)
 	r.GET("/product_categories/:id", controllers.GetProductCategoryController)
 	r.DELETE("/product_categories/:id", controllers.DeleteProductCategoryController)
-	r.PUT("product_categories/:id", controllers.UpdateProductCategoryController)
+	r.PUT("/product_categories/:id", controllers.UpdateProductCategoryController)
 	r.POST("/product_categories", controllers.CreateProductCategoryController)
 
 	return e
