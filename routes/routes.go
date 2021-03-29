@@ -18,14 +18,18 @@ func New() *echo.Echo {
 	// JWT Group
 	r := e.Group("/jwt")
 	r.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+
 	r.DELETE("/users/:id", controllers.DeleteUserController)
 	r.PUT("/users/:id", controllers.UpdateUserController)
-	
+
 	r.GET("/products", controllers.GetProductsController)
 	r.POST("/products", controllers.CreateProductController)
 
 	r.GET("/product_categories", controllers.GetProductCategoriesController)
+	r.GET("/product_categories/:id", controllers.GetProductCategoryController)
+	r.DELETE("/product_categories/:id", controllers.DeleteProductCategoryController)
+	r.PUT("product_categories/:id", controllers.UpdateProductCategoryController)
 	r.POST("/product_categories", controllers.CreateProductCategoryController)
-	
+
 	return e
 }
