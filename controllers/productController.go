@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
+	
 	"project/lib/database"
 	"project/models"
 
@@ -23,7 +25,7 @@ func GetProductsController(c echo.Context) error {
 func GetProductController(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}) {
+		return c.JSON(http.StatusBadRequest, map[string]interface{} {
 			"message": "failed to get a product, product with ID " + c.Param("id") + " is not found",
 		})
 	}
